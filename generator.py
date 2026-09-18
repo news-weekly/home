@@ -78,7 +78,7 @@ html = f"""<!DOCTYPE html>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>The Neighborhood News</title>
+    <title>The News Weekly</title>
 
     <style>
         body {{
@@ -154,7 +154,7 @@ html = f"""<!DOCTYPE html>
 <body>
 
 <header>
-    <h1>The Neighborhood News</h1>
+    <h1>The News Weekly</h1>
     <p>Our neighborhood's weekly newspaper</p>
 </header>
 
@@ -169,7 +169,7 @@ html = f"""<!DOCTYPE html>
 </section>
 
 <footer>
-    <p>The Neighborhood News</p>
+    <p>The News Weekly</p>
 </footer>
 
 </body>
