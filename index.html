@@ -13,6 +13,10 @@
 
     <style>
 
+        /* ------------------------------------------
+           Page
+           ------------------------------------------ */
+
         body {
             max-width: 900px;
             margin: auto;
@@ -21,6 +25,11 @@
             background: #f7f3ea;
             color: #222;
         }
+
+
+        /* ------------------------------------------
+           Header
+           ------------------------------------------ */
 
         header {
             text-align: center;
@@ -37,9 +46,19 @@
             font-style: italic;
         }
 
+
+        /* ------------------------------------------
+           Sections
+           ------------------------------------------ */
+
         section {
             margin-top: 40px;
         }
+
+
+        /* ------------------------------------------
+           Latest Issue
+           ------------------------------------------ */
 
         .latest {
             text-align: center;
@@ -47,6 +66,11 @@
             border: 2px solid #222;
             background: white;
         }
+
+
+        /* ------------------------------------------
+           PDF Viewer
+           ------------------------------------------ */
 
         .pdf-viewer {
             margin-top: 25px;
@@ -60,6 +84,11 @@
             background: white;
         }
 
+
+        /* ------------------------------------------
+           Buttons
+           ------------------------------------------ */
+
         .button {
             display: inline-block;
             padding: 12px 20px;
@@ -68,6 +97,20 @@
             text-decoration: none;
             margin-top: 10px;
         }
+
+
+        /* ------------------------------------------
+           Mobile PDF Message
+           ------------------------------------------ */
+
+        .mobile-pdf-message {
+            display: none;
+        }
+
+
+        /* ------------------------------------------
+           Previous Issues
+           ------------------------------------------ */
 
         .issues {
             display: grid;
@@ -82,9 +125,18 @@
             padding: 20px;
         }
 
+        .issue h3 {
+            margin-top: 0;
+        }
+
         .issue a {
             color: #222;
         }
+
+
+        /* ------------------------------------------
+           Footer
+           ------------------------------------------ */
 
         footer {
             margin-top: 60px;
@@ -93,11 +145,56 @@
             padding-top: 20px;
         }
 
+
+        /* ------------------------------------------
+           Mobile Layout
+           ------------------------------------------ */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 25px 15px;
+            }
+
+            h1 {
+                font-size: 2.3rem;
+            }
+
+            .latest {
+                padding: 20px;
+            }
+
+            /* Hide PDF viewer on phones */
+            .pdf-viewer iframe {
+                display: none;
+            }
+
+            /* Show mobile message */
+            .mobile-pdf-message {
+                display: block;
+                padding: 30px 10px;
+            }
+
+            /* Hide desktop button on phones */
+            .desktop-open-button {
+                display: none;
+            }
+
+            /* One issue per row */
+            .issues {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
     </style>
 
 </head>
 
+
 <body>
+
+    <!-- Header -->
 
     <header>
 
@@ -110,6 +207,8 @@
     </header>
 
 
+    <!-- Latest Issue -->
+
     
     <section class="latest">
 
@@ -118,13 +217,30 @@
         <h3>Issue #41</h3>
 
         <div class="pdf-viewer">
+
             <iframe
                 src="issues/issue-41.pdf"
                 title="The News Weekly - Issue #41">
             </iframe>
+
+            <div class="mobile-pdf-message">
+
+                <p>
+                    Reading on a phone?
+                </p>
+
+                <a
+                    class="button"
+                    href="issues/issue-41.pdf"
+                    target="_blank">
+                    Open Issue #41
+                </a>
+
+            </div>
+
         </div>
 
-        <p>
+        <p class="desktop-open-button">
             <a
                 class="button"
                 href="issues/issue-41.pdf"
@@ -136,6 +252,8 @@
     </section>
     
 
+
+    <!-- Previous Issues -->
 
     <section>
 
@@ -508,6 +626,8 @@
 
     </section>
 
+
+    <!-- Footer -->
 
     <footer>
 
