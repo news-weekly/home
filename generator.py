@@ -310,13 +310,13 @@ html = f"""<!DOCTYPE html>
             border-top: 1px solid #ccc;
             padding-top: 20px;
         }}
-        .about-newspaper {
+        .about-newspaper {{
             max-width: 700px;
             margin: 15px auto 0;
             font-size: 1rem;
             line-height: 1.6;
             font-style: normal;
-        }
+        }}
 
 
         /* ------------------------------------------
