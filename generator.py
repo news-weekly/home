@@ -310,6 +310,13 @@ html = f"""<!DOCTYPE html>
             border-top: 1px solid #ccc;
             padding-top: 20px;
         }}
+        .about-newspaper {
+            max-width: 700px;
+            margin: 15px auto 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-style: normal;
+        }
 
 
         /* ------------------------------------------
@@ -355,6 +362,16 @@ html = f"""<!DOCTYPE html>
 
         <p>
             Our neighborhood's weekly newspaper
+        </p>
+
+        <p class="about-newspaper">
+            The News Weekly began with a simple dream: an elementary school boy
+            in Downingtown, Pennsylvania, wanted to create his own newspaper to
+            share science stories, fun facts, puzzles, recipes, and other
+            interesting ideas with his neighborhood and school teachers.
+            Every week, he writes, creates, and publishes the paper all by himself.
+            Then, rain or shine, he hops on his bike and rides around the community
+            to deliver each issue by hand.
         </p>
 
     </header>
