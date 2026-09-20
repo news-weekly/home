@@ -75,7 +75,9 @@ if latest:
         for issue in previous_issues
     )
 
-    # Display the newest PDF directly on the homepage
+    # Display the newest PDF on the homepage
+    # Desktop: show PDF
+    # Mobile: show an "Open Issue" button
     latest_html = f"""
     <section class="latest">
 
@@ -84,26 +86,30 @@ if latest:
         <h3>Issue #{latest["number"]}</h3>
 
         <div class="pdf-viewer">
+
             <iframe
                 src="issues/{escape(latest["filename"])}"
                 title="The News Weekly - Issue #{latest["number"]}">
             </iframe>
 
-        <div class="mobile-pdf-message">
-            <p>
-                Reading on a phone?
-            </p>
+            <div class="mobile-pdf-message">
 
-            <a
-                class="button"
-                href="issues/{escape(latest["filename"])}"
-                target="_blank">
-                Open Issue #{latest["number"]}
-            </a>
+                <p>
+                    Reading on a phone?
+                </p>
+
+                <a
+                    class="button"
+                    href="issues/{escape(latest["filename"])}"
+                    target="_blank">
+                    Open Issue #{latest["number"]}
+                </a>
+
+            </div>
+
         </div>
-    </div>
 
-        <p>
+        <p class="desktop-open-button">
             <a
                 class="button"
                 href="issues/{escape(latest["filename"])}"
@@ -151,6 +157,10 @@ html = f"""<!DOCTYPE html>
 
     <style>
 
+        /* ------------------------------------------
+           Page
+           ------------------------------------------ */
+
         body {{
             max-width: 900px;
             margin: auto;
@@ -159,6 +169,11 @@ html = f"""<!DOCTYPE html>
             background: #f7f3ea;
             color: #222;
         }}
+
+
+        /* ------------------------------------------
+           Header
+           ------------------------------------------ */
 
         header {{
             text-align: center;
@@ -175,9 +190,19 @@ html = f"""<!DOCTYPE html>
             font-style: italic;
         }}
 
+
+        /* ------------------------------------------
+           Sections
+           ------------------------------------------ */
+
         section {{
             margin-top: 40px;
         }}
+
+
+        /* ------------------------------------------
+           Latest Issue
+           ------------------------------------------ */
 
         .latest {{
             text-align: center;
@@ -185,6 +210,11 @@ html = f"""<!DOCTYPE html>
             border: 2px solid #222;
             background: white;
         }}
+
+
+        /* ------------------------------------------
+           PDF Viewer
+           ------------------------------------------ */
 
         .pdf-viewer {{
             margin-top: 25px;
@@ -198,6 +228,11 @@ html = f"""<!DOCTYPE html>
             background: white;
         }}
 
+
+        /* ------------------------------------------
+           Buttons
+           ------------------------------------------ */
+
         .button {{
             display: inline-block;
             padding: 12px 20px;
@@ -206,6 +241,20 @@ html = f"""<!DOCTYPE html>
             text-decoration: none;
             margin-top: 10px;
         }}
+
+
+        /* ------------------------------------------
+           Mobile PDF Message
+           ------------------------------------------ */
+
+        .mobile-pdf-message {{
+            display: none;
+        }}
+
+
+        /* ------------------------------------------
+           Previous Issues
+           ------------------------------------------ */
 
         .issues {{
             display: grid;
@@ -220,9 +269,18 @@ html = f"""<!DOCTYPE html>
             padding: 20px;
         }}
 
+        .issue h3 {{
+            margin-top: 0;
+        }}
+
         .issue a {{
             color: #222;
         }}
+
+
+        /* ------------------------------------------
+           Footer
+           ------------------------------------------ */
 
         footer {{
             margin-top: 60px;
@@ -230,28 +288,57 @@ html = f"""<!DOCTYPE html>
             border-top: 1px solid #ccc;
             padding-top: 20px;
         }}
-        .mobile-pdf-message {
-    display: none;
-}
 
-@media (max-width: 700px) {
 
-    .pdf-viewer iframe {
-        display: none;
-    }
+        /* ------------------------------------------
+           Mobile Layout
+           ------------------------------------------ */
 
-    .mobile-pdf-message {
-        display: block;
-        padding: 30px 10px;
-    }
+        @media (max-width: 700px) {{
 
-}
+            body {{
+                padding: 25px 15px;
+            }}
+
+            h1 {{
+                font-size: 2.3rem;
+            }}
+
+            .latest {{
+                padding: 20px;
+            }}
+
+            /* Hide PDF viewer on phones */
+            .pdf-viewer iframe {{
+                display: none;
+            }}
+
+            /* Show mobile message */
+            .mobile-pdf-message {{
+                display: block;
+                padding: 30px 10px;
+            }}
+
+            /* Hide desktop button on phones */
+            .desktop-open-button {{
+                display: none;
+            }}
+
+            /* One issue per row */
+            .issues {{
+                grid-template-columns: 1fr;
+            }}
+
+        }}
 
     </style>
 
 </head>
 
+
 <body>
+
+    <!-- Header -->
 
     <header>
 
@@ -264,8 +351,12 @@ html = f"""<!DOCTYPE html>
     </header>
 
 
+    <!-- Latest Issue -->
+
     {latest_html}
 
+
+    <!-- Previous Issues -->
 
     <section>
 
@@ -279,6 +370,8 @@ html = f"""<!DOCTYPE html>
 
     </section>
 
+
+    <!-- Footer -->
 
     <footer>
 
