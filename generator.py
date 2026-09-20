@@ -88,7 +88,20 @@ if latest:
                 src="issues/{escape(latest["filename"])}"
                 title="The News Weekly - Issue #{latest["number"]}">
             </iframe>
+
+        <div class="mobile-pdf-message">
+            <p>
+                Reading on a phone?
+            </p>
+
+            <a
+                class="button"
+                href="issues/{escape(latest["filename"])}"
+                target="_blank">
+                Open Issue #{latest["number"]}
+            </a>
         </div>
+    </div>
 
         <p>
             <a
@@ -217,6 +230,22 @@ html = f"""<!DOCTYPE html>
             border-top: 1px solid #ccc;
             padding-top: 20px;
         }}
+        .mobile-pdf-message {
+    display: none;
+}
+
+@media (max-width: 700px) {
+
+    .pdf-viewer iframe {
+        display: none;
+    }
+
+    .mobile-pdf-message {
+        display: block;
+        padding: 30px 10px;
+    }
+
+}
 
     </style>
 
