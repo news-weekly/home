@@ -166,25 +166,9 @@ html = f"""<!DOCTYPE html>
             margin-top: 40px;
         }}
 
-        /* ------------------------------------------
-           Main two-column layout
-           ------------------------------------------ */
-
-        .main-layout {{
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 25px;
-            align-items: start;
-        }}
-
-        /* ------------------------------------------
-           Latest issue
-           ------------------------------------------ */
-
         .latest {{
-            margin-top: 40px;
             text-align: center;
-            padding: 25px;
+            padding: 35px;
             border: 2px solid #222;
             background: white;
         }}
@@ -201,10 +185,6 @@ html = f"""<!DOCTYPE html>
             background: white;
         }}
 
-        /* ------------------------------------------
-           Buttons
-           ------------------------------------------ */
-
         .button {{
             display: inline-block;
             padding: 12px 20px;
@@ -214,71 +194,28 @@ html = f"""<!DOCTYPE html>
             margin-top: 10px;
         }}
 
-        /* ------------------------------------------
-           Previous issues
-           ------------------------------------------ */
-
-        .previous {{
-            margin-top: 40px;
-        }}
-
-        .previous h2 {{
-            margin-top: 0;
-        }}
-
         .issues {{
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
         }}
 
         .issue {{
             background: white;
             border: 1px solid #ccc;
-            padding: 15px;
-        }}
-
-        .issue h3 {{
-            margin-top: 0;
+            padding: 20px;
         }}
 
         .issue a {{
             color: #222;
         }}
 
-        /* ------------------------------------------
-           Footer
-           ------------------------------------------ */
-
         footer {{
             margin-top: 60px;
             text-align: center;
             border-top: 1px solid #ccc;
             padding-top: 20px;
-        }}
-
-        /* ------------------------------------------
-           Mobile layout
-           ------------------------------------------ */
-
-        @media (max-width: 700px) {{
-
-            .main-layout {{
-                grid-template-columns: 1fr;
-            }}
-
-            .previous {{
-                margin-top: 20px;
-            }}
-
-            .pdf-viewer iframe {{
-                height: 700px;
-            }}
-
-            h1 {{
-                font-size: 2.3rem;
-            }}
-
         }}
 
     </style>
@@ -298,33 +235,21 @@ html = f"""<!DOCTYPE html>
     </header>
 
 
-    <!-- Main newspaper layout -->
-
-    <div class="main-layout">
-
-        <!-- Latest issue -->
-
-        {latest_html}
+    {latest_html}
 
 
-        <!-- Previous issues -->
+    <section>
 
-        <aside class="previous">
+        <h2>Previous Issues</h2>
 
-            <h2>Previous Issues</h2>
+        <div class="issues">
 
-            <div class="issues">
+            {previous_html}
 
-                {previous_html}
+        </div>
 
-            </div>
+    </section>
 
-        </aside>
-
-    </div>
-
-
-    <!-- Footer -->
 
     <footer>
 
