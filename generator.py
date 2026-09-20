@@ -2,8 +2,17 @@ from pathlib import Path
 import re
 from html import escape
 
+# --------------------------------------------------
+# Settings
+# --------------------------------------------------
+
 ISSUES_DIR = Path("issues")
 OUTPUT_FILE = Path("index.html")
+
+
+# --------------------------------------------------
+# Find all newspaper issues
+# --------------------------------------------------
 
 issues = []
 
@@ -20,8 +29,14 @@ for pdf in ISSUES_DIR.glob("*.pdf"):
         "filename": pdf.name
     })
 
+
 # Newest issue first
 issues.sort(key=lambda x: x["number"], reverse=True)
+
+
+# --------------------------------------------------
+# Determine latest issue
+# --------------------------------------------------
 
 if issues:
     latest = issues[0]
@@ -29,10 +44,15 @@ else:
     latest = None
 
 
+# --------------------------------------------------
+# Create an issue card
+# --------------------------------------------------
+
 def issue_card(issue):
     return f"""
     <div class="issue">
         <h3>Issue #{issue["number"]}</h3>
+
         <a href="issues/{escape(issue["filename"])}">
             Read Issue
         </a>
@@ -40,59 +60,84 @@ def issue_card(issue):
     """
 
 
+# --------------------------------------------------
+# Build Latest Issue section
+# --------------------------------------------------
+
 if latest:
+
+    # Everything except the newest issue
     previous_issues = issues[1:]
 
+    # Create cards for previous issues
     previous_html = "\n".join(
-        issue_card(issue) for issue in previous_issues
+        issue_card(issue)
+        for issue in previous_issues
     )
 
+    # Display the newest PDF directly on the homepage
     latest_html = f"""
-<section class="latest">
-    <h2>Latest Issue</h2>
-    <h3>Issue #{latest["number"]}</h3>
+    <section class="latest">
 
-    <div class="pdf-viewer">
-        <iframe
-            src="issues/{escape(latest["filename"])}"
-            title="Latest Issue"
-            width="100%"
-            height="900">
-        </iframe>
-    </div>
+        <h2>Latest Issue</h2>
 
-    <p>
-        <a class="button"
-           href="issues/{escape(latest["filename"])}"
-           target="_blank">
-            Open Full Issue
-        </a>
-    </p>
-</section>
-"""
-    
+        <h3>Issue #{latest["number"]}</h3>
+
+        <div class="pdf-viewer">
+            <iframe
+                src="issues/{escape(latest["filename"])}"
+                title="The News Weekly - Issue #{latest["number"]}">
+            </iframe>
+        </div>
+
+        <p>
+            <a
+                class="button"
+                href="issues/{escape(latest["filename"])}"
+                target="_blank">
+                Open Full Issue
+            </a>
+        </p>
+
+    </section>
+    """
+
 else:
+
     latest_html = """
     <section class="latest">
+
         <h2>Latest Issue</h2>
-        <p>The first issue will be published soon.</p>
+
+        <p>
+            The first issue will be published soon.
+        </p>
+
     </section>
     """
 
     previous_html = ""
 
 
+# --------------------------------------------------
+# Create the complete website
+# --------------------------------------------------
+
 html = f"""<!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>The News Weekly</title>
 
     <style>
+
         body {{
             max-width: 900px;
             margin: auto;
@@ -128,6 +173,18 @@ html = f"""<!DOCTYPE html>
             background: white;
         }}
 
+        .pdf-viewer {{
+            margin-top: 25px;
+            width: 100%;
+        }}
+
+        .pdf-viewer iframe {{
+            width: 100%;
+            height: 900px;
+            border: 1px solid #ccc;
+            background: white;
+        }}
+
         .button {{
             display: inline-block;
             padding: 12px 20px;
@@ -160,46 +217,80 @@ html = f"""<!DOCTYPE html>
             border-top: 1px solid #ccc;
             padding-top: 20px;
         }}
-        .pdf-viewer {
-    margin-top: 25px;
-    width: 100%;
-}
 
-.pdf-viewer iframe {
-    width: 100%;
-    height: 900px;
-    border: 1px solid #ccc;
-    background: white;
-}
     </style>
+
 </head>
 
 <body>
 
-<header>
-    <h1>The News Weekly</h1>
-    <p>Our neighborhood's weekly newspaper</p>
-</header>
+    <header>
 
-{latest_html}
+        <h1>The News Weekly</h1>
 
-<section>
-    <h2>Previous Issues</h2>
+        <p>
+            Our neighborhood's weekly newspaper
+        </p>
 
-    <div class="issues">
-        {previous_html}
-    </div>
-</section>
+    </header>
 
-<footer>
-    <p>The News Weekly</p>
-</footer>
+
+    {latest_html}
+
+
+    <section>
+
+        <h2>Previous Issues</h2>
+
+        <div class="issues">
+
+            {previous_html}
+
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        <p>
+            The News Weekly
+        </p>
+
+    </footer>
 
 </body>
+
 </html>
 """
 
-OUTPUT_FILE.write_text(html, encoding="utf-8")
 
-print(f"Generated {OUTPUT_FILE}")
-print(f"Found {len(issues)} issues")
+# --------------------------------------------------
+# Write index.html
+# --------------------------------------------------
+
+OUTPUT_FILE.write_text(
+    html,
+    encoding="utf-8"
+)
+
+
+# --------------------------------------------------
+# Show information in GitHub Actions
+# --------------------------------------------------
+
+print("======================================")
+print("Website generated successfully!")
+print("======================================")
+
+print(f"Found {len(issues)} issue(s).")
+
+if latest:
+    print(
+        f"Latest issue: #{latest['number']} "
+        f"({latest['filename']})"
+    )
+else:
+    print("No issues found.")
+
+print(f"Created: {OUTPUT_FILE}")
