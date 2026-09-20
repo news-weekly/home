@@ -70,7 +70,7 @@ if latest:
     </p>
 </section>
 """
-    """
+    
 else:
     latest_html = """
     <section class="latest">
