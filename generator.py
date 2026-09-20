@@ -7,6 +7,7 @@ from html import escape
 # --------------------------------------------------
 
 ISSUES_DIR = Path("issues")
+PREVIEWS_DIR = Path("previews")
 OUTPUT_FILE = Path("index.html")
 
 
@@ -51,11 +52,13 @@ else:
 def issue_card(issue):
     return f"""
     <div class="issue">
+
         <h3>Issue #{issue["number"]}</h3>
 
         <a href="issues/{escape(issue["filename"])}">
             Read Issue
         </a>
+
     </div>
     """
 
@@ -75,9 +78,36 @@ if latest:
         for issue in previous_issues
     )
 
-    # Display the newest PDF on the homepage
-    # Desktop: show PDF
-    # Mobile: show an "Open Issue" button
+    # First-page preview image
+    preview_filename = f"issue-{latest['number']}.png"
+    preview_path = PREVIEWS_DIR / preview_filename
+
+    if preview_path.exists():
+
+        preview_html = f"""
+        <a
+            href="issues/{escape(latest["filename"])}"
+            target="_blank">
+
+            <img
+                class="issue-preview"
+                src="previews/{escape(preview_filename)}"
+                alt="Preview of The News Weekly Issue #{latest["number"]}">
+        </a>
+        """
+
+    else:
+
+        preview_html = f"""
+        <div class="preview-missing">
+
+            <p>
+                The latest issue is ready to read.
+            </p>
+
+        </div>
+        """
+
     latest_html = f"""
     <section class="latest">
 
@@ -85,36 +115,20 @@ if latest:
 
         <h3>Issue #{latest["number"]}</h3>
 
-        <div class="pdf-viewer">
+        <div class="preview-container">
 
-            <iframe
-                src="issues/{escape(latest["filename"])}"
-                title="The News Weekly - Issue #{latest["number"]}">
-            </iframe>
-
-            <div class="mobile-pdf-message">
-
-                <p>
-                    Reading on a phone?
-                </p>
-
-                <a
-                    class="button"
-                    href="issues/{escape(latest["filename"])}"
-                    target="_blank">
-                    Open Issue #{latest["number"]}
-                </a>
-
-            </div>
+            {preview_html}
 
         </div>
 
-        <p class="desktop-open-button">
+        <p>
             <a
                 class="button"
                 href="issues/{escape(latest["filename"])}"
                 target="_blank">
+
                 Open Full Issue
+
             </a>
         </p>
 
@@ -213,19 +227,32 @@ html = f"""<!DOCTYPE html>
 
 
         /* ------------------------------------------
-           PDF Viewer
+           Preview Image
            ------------------------------------------ */
 
-        .pdf-viewer {{
+        .preview-container {{
             margin-top: 25px;
             width: 100%;
         }}
 
-        .pdf-viewer iframe {{
+        .issue-preview {{
+            display: block;
             width: 100%;
-            height: 900px;
+            max-width: 850px;
+            height: auto;
+            margin: auto;
             border: 1px solid #ccc;
-            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }}
+
+        .issue-preview:hover {{
+            opacity: 0.95;
+        }}
+
+        .preview-missing {{
+            padding: 40px 20px;
+            background: #f5f5f5;
+            border: 1px solid #ccc;
         }}
 
 
@@ -242,13 +269,8 @@ html = f"""<!DOCTYPE html>
             margin-top: 10px;
         }}
 
-
-        /* ------------------------------------------
-           Mobile PDF Message
-           ------------------------------------------ */
-
-        .mobile-pdf-message {{
-            display: none;
+        .button:hover {{
+            opacity: 0.85;
         }}
 
 
@@ -308,23 +330,10 @@ html = f"""<!DOCTYPE html>
                 padding: 20px;
             }}
 
-            /* Hide PDF viewer on phones */
-            .pdf-viewer iframe {{
-                display: none;
+            .issue-preview {{
+                width: 100%;
             }}
 
-            /* Show mobile message */
-            .mobile-pdf-message {{
-                display: block;
-                padding: 30px 10px;
-            }}
-
-            /* Hide desktop button on phones */
-            .desktop-open-button {{
-                display: none;
-            }}
-
-            /* One issue per row */
             .issues {{
                 grid-template-columns: 1fr;
             }}
@@ -408,11 +417,20 @@ print("======================================")
 print(f"Found {len(issues)} issue(s).")
 
 if latest:
+
     print(
         f"Latest issue: #{latest['number']} "
         f"({latest['filename']})"
     )
+
+    print(
+        f"Preview expected: "
+        f"previews/issue-{latest['number']}.png"
+    )
+
 else:
+
     print("No issues found.")
+
 
 print(f"Created: {OUTPUT_FILE}")
