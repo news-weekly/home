@@ -48,16 +48,28 @@ if latest:
     )
 
     latest_html = f"""
-    <section class="latest">
-        <h2>Latest Issue</h2>
+<section class="latest">
+    <h2>Latest Issue</h2>
+    <h3>Issue #{latest["number"]}</h3>
 
-        <h3>Issue #{latest["number"]}</h3>
+    <div class="pdf-viewer">
+        <iframe
+            src="issues/{escape(latest["filename"])}"
+            title="Latest Issue"
+            width="100%"
+            height="900">
+        </iframe>
+    </div>
 
+    <p>
         <a class="button"
-           href="issues/{escape(latest["filename"])}">
-            Read the Latest Issue
+           href="issues/{escape(latest["filename"])}"
+           target="_blank">
+            Open Full Issue
         </a>
-    </section>
+    </p>
+</section>
+"""
     """
 else:
     latest_html = """
@@ -148,6 +160,17 @@ html = f"""<!DOCTYPE html>
             border-top: 1px solid #ccc;
             padding-top: 20px;
         }}
+        .pdf-viewer {
+    margin-top: 25px;
+    width: 100%;
+}
+
+.pdf-viewer iframe {
+    width: 100%;
+    height: 900px;
+    border: 1px solid #ccc;
+    background: white;
+}
     </style>
 </head>
 
