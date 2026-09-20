@@ -1,4 +1,4 @@
-name: Publish Newspaper
+name: Build Newspaper Website
 
 on:
   push:
@@ -9,25 +9,103 @@ permissions:
   contents: write
 
 jobs:
-  publish:
+
+  build:
+
     runs-on: ubuntu-latest
 
     steps:
 
-      - name: Get repository
+      - name: Get the code
         uses: actions/checkout@v4
+
+
+      - name: Install PDF tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+
+
+      - name: Create preview folder
+        run: |
+          mkdir -p previews
+
+
+      - name: Create latest issue preview
+        run: |
+
+          python - <<'PY'
+
+          from pathlib import Path
+          import re
+          import subprocess
+
+          issues_dir = Path("issues")
+          previews_dir = Path("previews")
+
+          issues = []
+
+          for pdf in issues_dir.glob("*.pdf"):
+
+              match = re.search(r"(\d+)", pdf.stem)
+
+              if match:
+                  number = int(match.group(1))
+              else:
+                  number = 0
+
+              issues.append((number, pdf))
+
+          if issues:
+
+              issues.sort(
+                  key=lambda x: x[0],
+                  reverse=True
+              )
+
+              number, pdf = issues[0]
+
+              output = previews_dir / f"issue-{number}"
+
+              print(
+                  f"Creating preview for Issue #{number}"
+              )
+
+              subprocess.run(
+                  [
+                      "pdftoppm",
+                      "-png",
+                      "-f",
+                      "1",
+                      "-singlefile",
+                      "-r",
+                      "120",
+                      str(pdf),
+                      str(output)
+                  ],
+                  check=True
+              )
+
+          else:
+
+              print("No PDF issues found.")
+
+          PY
+
 
       - name: Generate website
         run: python generator.py
 
-      - name: Commit generated website
+
+      - name: Save generated website
         run: |
+
           git config user.name "github-actions"
+
           git config user.email "github-actions@github.com"
 
-          git add index.html
+          git add index.html previews/
 
-          git diff --cached --quiet || \
-            git commit -m "Update newspaper website"
+          git diff --cached --quiet || git commit -m "Update website"
 
           git push
