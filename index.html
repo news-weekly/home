@@ -46,6 +46,14 @@
             font-style: italic;
         }
 
+        .about-newspaper {
+            max-width: 700px;
+            margin: 15px auto 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-style: normal;
+        }
+
 
         /* ------------------------------------------
            Sections
@@ -109,6 +117,9 @@
             color: white;
             text-decoration: none;
             margin-top: 10px;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            border: none;
         }
 
         .button:hover {
@@ -117,7 +128,7 @@
 
 
         /* ------------------------------------------
-           Previous Issues
+           Issue Cards
            ------------------------------------------ */
 
         .issues {
@@ -143,6 +154,38 @@
 
 
         /* ------------------------------------------
+           Expandable Previous Issues
+           ------------------------------------------ */
+
+        .older-issues {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .older-issues summary.button {
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .older-issues summary.button::-webkit-details-marker {
+            display: none;
+        }
+
+        .older-issues summary.button::after {
+            content: " +";
+        }
+
+        .older-issues details[open] summary.button::after {
+            content: " −";
+        }
+
+        .previous-issues {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+
+        /* ------------------------------------------
            Footer
            ------------------------------------------ */
 
@@ -151,13 +194,6 @@
             text-align: center;
             border-top: 1px solid #ccc;
             padding-top: 20px;
-        }
-        .about-newspaper {
-            max-width: 700px;
-            margin: 15px auto 0;
-            font-size: 1rem;
-            line-height: 1.6;
-            font-style: normal;
         }
 
 
@@ -207,19 +243,21 @@
         </p>
 
         <p class="about-newspaper">
-            The News Weekly began with a simple dream: a young elementary school student
-            in Downingtown, Pennsylvania, wanted to create his own newspaper to
-            share science stories, fun facts, puzzles, recipes, and other
+            The News Weekly began with a simple dream: a young
+            elementary school student in Downingtown, Pennsylvania,
+            wanted to create his own newspaper to share science
+            stories, fun facts, puzzles, recipes, and other
             fascinating ideas with his neighbors and teachers.
-            Every week, he writes, designs, and publishes the entire paper all on his own.
-            Then, rain or shine, he hops on his bike and rides around the community,
+            Every week, he writes, designs, and publishes the
+            entire paper all on his own. Then, rain or shine,
+            he hops on his bike and rides around the community,
             delivering each issue by hand.
         </p>
 
     </header>
 
 
-    <!-- Latest Issue -->
+    <!-- Featured Latest Issue -->
 
     
     <section class="latest">
@@ -259,11 +297,11 @@
     
 
 
-    <!-- Previous Issues -->
+    <!-- Recent 12 Issues (excluding the featured issue) -->
 
-    <section>
+    <section class="recent">
 
-        <h2>Previous Issues</h2>
+        <h2>Recent 12 Issues</h2>
 
         <div class="issues">
 
@@ -272,7 +310,7 @@
 
         <h3>Issue #42</h3>
 
-        <a href="issues/issue-42.pdf">
+        <a href="issues/issue-42.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -283,7 +321,7 @@
 
         <h3>Issue #41</h3>
 
-        <a href="issues/issue-41.pdf">
+        <a href="issues/issue-41.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -294,7 +332,7 @@
 
         <h3>Issue #40</h3>
 
-        <a href="issues/issue-40.pdf">
+        <a href="issues/issue-40.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -305,7 +343,7 @@
 
         <h3>Issue #39</h3>
 
-        <a href="issues/issue-39.pdf">
+        <a href="issues/issue-39.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -316,7 +354,7 @@
 
         <h3>Issue #38</h3>
 
-        <a href="issues/issue-38.pdf">
+        <a href="issues/issue-38.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -327,7 +365,7 @@
 
         <h3>Issue #37</h3>
 
-        <a href="issues/issue-37.pdf">
+        <a href="issues/issue-37.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -338,7 +376,7 @@
 
         <h3>Issue #36</h3>
 
-        <a href="issues/issue-36.pdf">
+        <a href="issues/issue-36.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -349,7 +387,7 @@
 
         <h3>Issue #35</h3>
 
-        <a href="issues/issue-35.pdf">
+        <a href="issues/issue-35.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -360,7 +398,7 @@
 
         <h3>Issue #34</h3>
 
-        <a href="issues/issue-34.pdf">
+        <a href="issues/issue-34.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -371,7 +409,7 @@
 
         <h3>Issue #33</h3>
 
-        <a href="issues/issue-33.pdf">
+        <a href="issues/issue-33.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -382,7 +420,7 @@
 
         <h3>Issue #32</h3>
 
-        <a href="issues/issue-32.pdf">
+        <a href="issues/issue-32.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -393,18 +431,37 @@
 
         <h3>Issue #31</h3>
 
-        <a href="issues/issue-31.pdf">
+        <a href="issues/issue-31.pdf" target="_blank">
             Read Issue
         </a>
 
     </div>
     
 
+        </div>
+
+    </section>
+
+
+    <!-- Older Issues: Hidden Until Clicked -->
+
+    
+    <section class="older-issues">
+
+        <details>
+
+            <summary class="button">
+                View All Previous Issues
+            </summary>
+
+            <div class="issues previous-issues">
+
+                
     <div class="issue">
 
         <h3>Issue #30</h3>
 
-        <a href="issues/issue-30.pdf">
+        <a href="issues/issue-30.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -415,7 +472,7 @@
 
         <h3>Issue #29</h3>
 
-        <a href="issues/issue-29.pdf">
+        <a href="issues/issue-29.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -426,7 +483,7 @@
 
         <h3>Issue #28</h3>
 
-        <a href="issues/issue-28.pdf">
+        <a href="issues/issue-28.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -437,7 +494,7 @@
 
         <h3>Issue #27</h3>
 
-        <a href="issues/issue-27.pdf">
+        <a href="issues/issue-27.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -448,7 +505,7 @@
 
         <h3>Issue #26</h3>
 
-        <a href="issues/issue-26.pdf">
+        <a href="issues/issue-26.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -459,7 +516,7 @@
 
         <h3>Issue #25</h3>
 
-        <a href="issues/issue-25.pdf">
+        <a href="issues/issue-25.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -470,7 +527,7 @@
 
         <h3>Issue #24</h3>
 
-        <a href="issues/issue-24.pdf">
+        <a href="issues/issue-24.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -481,7 +538,7 @@
 
         <h3>Issue #23</h3>
 
-        <a href="issues/issue-23.pdf">
+        <a href="issues/issue-23.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -492,7 +549,7 @@
 
         <h3>Issue #22</h3>
 
-        <a href="issues/issue-22.pdf">
+        <a href="issues/issue-22.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -503,7 +560,7 @@
 
         <h3>Issue #21</h3>
 
-        <a href="issues/issue-21.pdf">
+        <a href="issues/issue-21.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -514,7 +571,7 @@
 
         <h3>Issue #20</h3>
 
-        <a href="issues/issue-20.pdf">
+        <a href="issues/issue-20.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -525,7 +582,7 @@
 
         <h3>Issue #19</h3>
 
-        <a href="issues/issue-19.pdf">
+        <a href="issues/issue-19.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -536,7 +593,7 @@
 
         <h3>Issue #18</h3>
 
-        <a href="issues/issue-18.pdf">
+        <a href="issues/issue-18.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -547,7 +604,7 @@
 
         <h3>Issue #17</h3>
 
-        <a href="issues/issue-17.pdf">
+        <a href="issues/issue-17.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -558,7 +615,7 @@
 
         <h3>Issue #16</h3>
 
-        <a href="issues/issue-16.pdf">
+        <a href="issues/issue-16.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -569,7 +626,7 @@
 
         <h3>Issue #15</h3>
 
-        <a href="issues/issue-15.pdf">
+        <a href="issues/issue-15.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -580,7 +637,7 @@
 
         <h3>Issue #14</h3>
 
-        <a href="issues/issue-14.pdf">
+        <a href="issues/issue-14.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -591,7 +648,7 @@
 
         <h3>Issue #13</h3>
 
-        <a href="issues/issue-13.pdf">
+        <a href="issues/issue-13.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -602,7 +659,7 @@
 
         <h3>Issue #12</h3>
 
-        <a href="issues/issue-12.pdf">
+        <a href="issues/issue-12.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -613,7 +670,7 @@
 
         <h3>Issue #11</h3>
 
-        <a href="issues/issue-11.pdf">
+        <a href="issues/issue-11.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -624,7 +681,7 @@
 
         <h3>Issue #10</h3>
 
-        <a href="issues/issue-10.pdf">
+        <a href="issues/issue-10.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -635,7 +692,7 @@
 
         <h3>Issue #9</h3>
 
-        <a href="issues/issue-09.pdf">
+        <a href="issues/issue-09.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -646,7 +703,7 @@
 
         <h3>Issue #8</h3>
 
-        <a href="issues/issue-08.pdf">
+        <a href="issues/issue-08.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -657,7 +714,7 @@
 
         <h3>Issue #7</h3>
 
-        <a href="issues/issue-07.pdf">
+        <a href="issues/issue-07.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -668,7 +725,7 @@
 
         <h3>Issue #6</h3>
 
-        <a href="issues/issue-06.pdf">
+        <a href="issues/issue-06.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -679,7 +736,7 @@
 
         <h3>Issue #5</h3>
 
-        <a href="issues/issue-05.pdf">
+        <a href="issues/issue-05.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -690,7 +747,7 @@
 
         <h3>Issue #4</h3>
 
-        <a href="issues/issue-04.pdf">
+        <a href="issues/issue-04.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -701,7 +758,7 @@
 
         <h3>Issue #3</h3>
 
-        <a href="issues/issue-03.pdf">
+        <a href="issues/issue-03.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -712,7 +769,7 @@
 
         <h3>Issue #2</h3>
 
-        <a href="issues/issue-02.pdf">
+        <a href="issues/issue-02.pdf" target="_blank">
             Read Issue
         </a>
 
@@ -723,16 +780,19 @@
 
         <h3>Issue #1</h3>
 
-        <a href="issues/issue-01.pdf">
+        <a href="issues/issue-01.pdf" target="_blank">
             Read Issue
         </a>
 
     </div>
     
 
-        </div>
+            </div>
+
+        </details>
 
     </section>
+    
 
 
     <!-- Footer -->
