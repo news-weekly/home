@@ -365,11 +365,11 @@ html = f"""<!DOCTYPE html>
         </p>
 
         <p class="about-newspaper">
-            The News Weekly began with a simple dream: an elementary school boy
+            The News Weekly began with a simple dream: a young elementary school boy
             in Downingtown, Pennsylvania, wanted to create his own newspaper to
             share science stories, fun facts, puzzles, recipes, and other
-            interesting ideas with his neighborhood and school teachers.
-            Every week, he writes, creates, and publishes the paper all by himself.
+            interesting ideas with his neighbors and school teachers.
+            Every week, he writes, designs, and publishes the entire paper all on his own.
             Then, rain or shine, he hops on his bike and rides around the community
             to deliver each issue by hand.
         </p>
