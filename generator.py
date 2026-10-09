@@ -36,7 +36,7 @@ issues.sort(key=lambda x: x["number"], reverse=True)
 
 
 # --------------------------------------------------
-# Determine latest issue
+# Separate issues into groups
 # --------------------------------------------------
 
 if issues:
@@ -44,18 +44,28 @@ if issues:
 else:
     latest = None
 
+# The newest issue is featured separately.
+# The next 12 issues appear in Recent 12 Issues.
+latest_12_issues = issues[1:13]
+
+# Everything older than the Recent 12 Issues.
+previous_issues = issues[13:]
+
 
 # --------------------------------------------------
 # Create an issue card
 # --------------------------------------------------
 
 def issue_card(issue):
+    filename = escape(issue["filename"], quote=True)
+    number = issue["number"]
+
     return f"""
     <div class="issue">
 
-        <h3>Issue #{issue["number"]}</h3>
+        <h3>Issue #{number}</h3>
 
-        <a href="issues/{escape(issue["filename"])}">
+        <a href="issues/{filename}" target="_blank">
             Read Issue
         </a>
 
@@ -64,41 +74,77 @@ def issue_card(issue):
 
 
 # --------------------------------------------------
+# Build Recent 12 Issues section
+# --------------------------------------------------
+
+latest_issues_html = "\n".join(
+    issue_card(issue)
+    for issue in latest_12_issues
+)
+
+
+# --------------------------------------------------
+# Build expandable Previous Issues section
+# --------------------------------------------------
+
+previous_html = "\n".join(
+    issue_card(issue)
+    for issue in previous_issues
+)
+
+if previous_issues:
+    previous_section_html = f"""
+    <section class="older-issues">
+
+        <details>
+
+            <summary class="button">
+                View All Previous Issues
+            </summary>
+
+            <div class="issues previous-issues">
+
+                {previous_html}
+
+            </div>
+
+        </details>
+
+    </section>
+    """
+else:
+    previous_section_html = ""
+
+
+# --------------------------------------------------
 # Build Latest Issue section
 # --------------------------------------------------
 
 if latest:
 
-    # Everything except the newest issue
-    previous_issues = issues[1:]
-
-    # Create cards for previous issues
-    previous_html = "\n".join(
-        issue_card(issue)
-        for issue in previous_issues
-    )
-
     # First-page preview image
     preview_filename = f"issue-{latest['number']}.png"
     preview_path = PREVIEWS_DIR / preview_filename
+
+    latest_filename = escape(latest["filename"], quote=True)
 
     if preview_path.exists():
 
         preview_html = f"""
         <a
-            href="issues/{escape(latest["filename"])}"
+            href="issues/{latest_filename}"
             target="_blank">
 
             <img
                 class="issue-preview"
-                src="previews/{escape(preview_filename)}"
-                alt="Preview of The News Weekly Issue #{latest["number"]}">
+                src="previews/{escape(preview_filename, quote=True)}"
+                alt="Preview of The News Weekly Issue #{latest['number']}">
         </a>
         """
 
     else:
 
-        preview_html = f"""
+        preview_html = """
         <div class="preview-missing">
 
             <p>
@@ -124,7 +170,7 @@ if latest:
         <p>
             <a
                 class="button"
-                href="issues/{escape(latest["filename"])}"
+                href="issues/{latest_filename}"
                 target="_blank">
 
                 Open Full Issue
@@ -148,8 +194,6 @@ else:
 
     </section>
     """
-
-    previous_html = ""
 
 
 # --------------------------------------------------
@@ -202,6 +246,14 @@ html = f"""<!DOCTYPE html>
 
         header p {{
             font-style: italic;
+        }}
+
+        .about-newspaper {{
+            max-width: 700px;
+            margin: 15px auto 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-style: normal;
         }}
 
 
@@ -267,6 +319,9 @@ html = f"""<!DOCTYPE html>
             color: white;
             text-decoration: none;
             margin-top: 10px;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            border: none;
         }}
 
         .button:hover {{
@@ -275,7 +330,7 @@ html = f"""<!DOCTYPE html>
 
 
         /* ------------------------------------------
-           Previous Issues
+           Issue Cards
            ------------------------------------------ */
 
         .issues {{
@@ -301,6 +356,38 @@ html = f"""<!DOCTYPE html>
 
 
         /* ------------------------------------------
+           Expandable Previous Issues
+           ------------------------------------------ */
+
+        .older-issues {{
+            text-align: center;
+            margin-top: 30px;
+        }}
+
+        .older-issues summary.button {{
+            cursor: pointer;
+            list-style: none;
+        }}
+
+        .older-issues summary.button::-webkit-details-marker {{
+            display: none;
+        }}
+
+        .older-issues summary.button::after {{
+            content: " +";
+        }}
+
+        .older-issues details[open] summary.button::after {{
+            content: " −";
+        }}
+
+        .previous-issues {{
+            margin-top: 25px;
+            text-align: left;
+        }}
+
+
+        /* ------------------------------------------
            Footer
            ------------------------------------------ */
 
@@ -309,13 +396,6 @@ html = f"""<!DOCTYPE html>
             text-align: center;
             border-top: 1px solid #ccc;
             padding-top: 20px;
-        }}
-        .about-newspaper {{
-            max-width: 700px;
-            margin: 15px auto 0;
-            font-size: 1rem;
-            line-height: 1.6;
-            font-style: normal;
         }}
 
 
@@ -365,36 +445,43 @@ html = f"""<!DOCTYPE html>
         </p>
 
         <p class="about-newspaper">
-            The News Weekly began with a simple dream: a young elementary school student
-            in Downingtown, Pennsylvania, wanted to create his own newspaper to
-            share science stories, fun facts, puzzles, recipes, and other
+            The News Weekly began with a simple dream: a young
+            elementary school student in Downingtown, Pennsylvania,
+            wanted to create his own newspaper to share science
+            stories, fun facts, puzzles, recipes, and other
             fascinating ideas with his neighbors and teachers.
-            Every week, he writes, designs, and publishes the entire paper all on his own.
-            Then, rain or shine, he hops on his bike and rides around the community,
+            Every week, he writes, designs, and publishes the
+            entire paper all on his own. Then, rain or shine,
+            he hops on his bike and rides around the community,
             delivering each issue by hand.
         </p>
 
     </header>
 
 
-    <!-- Latest Issue -->
+    <!-- Featured Latest Issue -->
 
     {latest_html}
 
 
-    <!-- Previous Issues -->
+    <!-- Recent 12 Issues (excluding the featured issue) -->
 
-    <section>
+    <section class="recent">
 
-        <h2>Previous Issues</h2>
+        <h2>Recent 12 Issues</h2>
 
         <div class="issues">
 
-            {previous_html}
+            {latest_issues_html}
 
         </div>
 
     </section>
+
+
+    <!-- Older Issues: Hidden Until Clicked -->
+
+    {previous_section_html}
 
 
     <!-- Footer -->
@@ -441,6 +528,16 @@ if latest:
     )
 
     print(
+        f"Recent issues displayed: "
+        f"{len(latest_12_issues)}"
+    )
+
+    print(
+        f"Older issues available to expand: "
+        f"{len(previous_issues)}"
+    )
+
+    print(
         f"Preview expected: "
         f"previews/issue-{latest['number']}.png"
     )
@@ -448,6 +545,5 @@ if latest:
 else:
 
     print("No issues found.")
-
 
 print(f"Created: {OUTPUT_FILE}")
